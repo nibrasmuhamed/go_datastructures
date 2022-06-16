@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type BST struct {
 	data  int
 	left  *BST
@@ -15,19 +17,21 @@ func (b *BinaryTree) Insert(value int) {
 	temp := new(BST)
 	temp.data = value
 	if currentNode == nil {
-		temp = currentNode
+		b.root = temp
 		return
 	}
-	for true {
+	for {
 		if value < currentNode.data {
 			if currentNode.left == nil {
-				temp = currentNode.left
+				currentNode.left = temp
+				return
 			} else {
 				currentNode = currentNode.left
 			}
 		} else {
 			if currentNode.right == nil {
-				temp = currentNode.right
+				currentNode.right = temp
+				return
 			} else {
 				currentNode = currentNode.right
 			}
@@ -35,7 +39,26 @@ func (b *BinaryTree) Insert(value int) {
 	}
 }
 
+func (b *BinaryTree) Contains(value int) bool {
+	temp := b.root
+	for temp != nil {
+		if temp.data > value {
+			temp = temp.left
+		} else if temp.data < value {
+			temp = temp.right
+		} else {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
 	tree := BinaryTree{}
 	tree.Insert(39)
+	tree.Insert(12)
+	tree.Insert(34)
+
+	fmt.Println(tree.Contains(34))
+
 }
