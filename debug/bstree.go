@@ -108,14 +108,25 @@ func getMinimumValue(currentNode *BST) int {
 	}
 }
 
+func (b BinaryTree) inOrder() {
+	inOrderHelper(b.root)
+}
+
+func inOrderHelper(tempNode *BST) {
+	if tempNode != nil {
+		inOrderHelper(tempNode.left)
+		fmt.Printf("%d ->", tempNode.data)
+		inOrderHelper(tempNode.right)
+	}
+}
+
 func main() {
 	tree := BinaryTree{}
 	tree.Insert(39)
 	tree.Insert(12)
 	tree.Insert(34)
-
 	fmt.Println(tree.Contains(12))
 	tree.remove(300)
 	fmt.Println(tree.Contains(39))
-
+	tree.inOrder()
 }
