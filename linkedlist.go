@@ -101,6 +101,17 @@ func (l *List) removeDuplicate() {
 
 }
 
+func (l *List) reverseList() {
+	var before, after *Node
+	for l.head != nil {
+		after = l.head.next
+		l.head.next = before // before is null (making head's next nil)
+		before = l.head
+		l.head = after
+	}
+	l.head = before
+}
+
 func main() {
 	mylist := List{}
 	mylist.addNode(6)
@@ -110,7 +121,8 @@ func main() {
 	mylist.addNode(8)
 	mylist.addNode(5)
 	mylist.addNode(5)
-	mylist.removeDuplicate()
+	// mylist.removeDuplicate()
+	mylist.reverseList()
 	mylist.display()
 
 }

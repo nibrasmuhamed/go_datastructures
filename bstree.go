@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type BST struct {
 	data  int
@@ -65,7 +68,7 @@ func (b *BinaryTree) RemoveHelper(data int, currentNode *BST, parentNode *BST) {
 		} else if data > currentNode.data {
 			parentNode = currentNode
 			currentNode = currentNode.right
-		} else {
+		} else { // if the node is found.
 			// condition 1 : current node has right and left child.
 			if currentNode.right != nil && currentNode.left != nil {
 				currentNode.data = getMinimumValue(currentNode.right)
@@ -120,13 +123,65 @@ func inOrderHelper(tempNode *BST) {
 	}
 }
 
+func (b *BinaryTree) postOrder() {
+	postOrderHelper(b.root)
+}
+
+func postOrderHelper(tempNode *BST) {
+	if tempNode != nil {
+		postOrderHelper(tempNode.left)
+		postOrderHelper(tempNode.right)
+		fmt.Printf("%d ->", tempNode.data)
+	}
+}
+
+func (b *BinaryTree) preOrder() {
+	preOrderHelper(b.root)
+}
+
+func preOrderHelper(tempNode *BST) {
+	if tempNode != nil {
+		fmt.Printf("%d ->", tempNode.data)
+		preOrderHelper(tempNode.left)
+		preOrderHelper(tempNode.right)
+	}
+}
+
+func (b *BinaryTree) findclosest(target int) int {
+	currentNode := b.root
+	closest := currentNode.data
+	for currentNode != nil {
+		if math.Abs(float64(target)-float64(closest)) > math.Abs(float64(target)-float64(currentNode.data)) {
+			closest = currentNode.data
+		}
+		if target < currentNode.data {
+			currentNode = currentNode.left
+		} else if target > currentNode.data {
+			currentNode = currentNode.right
+		} else {
+			break
+		}
+	}
+	return closest
+}
+
 func main() {
 	tree := BinaryTree{}
 	tree.Insert(39)
-	tree.Insert(12)
+	tree.Insert(36)
+	tree.Insert(5)
+	tree.Insert(19)
+	tree.Insert(9)
 	tree.Insert(34)
 	fmt.Println(tree.Contains(12))
 	tree.remove(300)
 	fmt.Println(tree.Contains(39))
 	tree.inOrder()
+	fmt.Println()
+	tree.postOrder()
+	fmt.Println()
+	tree.preOrder()
+	fmt.Println()
+	// fmt.Println(findclosest(tree, 90))
+	fmt.Println(tree.findclosest(34))
 }
